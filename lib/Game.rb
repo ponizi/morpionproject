@@ -1,113 +1,45 @@
-class Game
-    @a1 = " "
-    @a2 = " "
-    @a3 = " "
-    @b1 = " "
-    @b2 = " "
-    @b3 = " "
-    @c1 = " "
-    @c2 = " "
-    @c3 = " "
-  def tourj1
-    compteur_1 = 0
-    array = []
-    puts "Joueur 1 commence, sélectionne une case et écrit son code"
-    while compteur_1 != 1
-      print ">"
-      choice1 = gets.chomp
-      if choice1 == "a1" && @a1 == " "
-        @a1 = "x"
-        compteur_1 = compteur_1 + 1
-      elsif choice1 == "a2" && @a2 == " "
-        @a2 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "a3" && @a3 == " "
-        @a3 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "b1" && @b1 == " "
-        @b1 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "b2" && @b2 == " "
-        @b2 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "b3" && @b3 == " "
-        @b3 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "c1" && @c1 == " "
-        @c1 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "c2" && @c2 == " "
-        @c2 = "x"; compteur_1 = compteur_1 + 1
-      elsif choice1 == "c3" && @c3 == " "
-        @c3 = "x"; compteur_1 = compteur_1 + 1
-      else 
-        puts "La case choisie est déjà occupée, choisissez-en une autre"
+class Game 
+  @cases = ['a1','b1','c1','a2','b2','c2','a3','b3','c3']
+  @j1 =[]
+  @j2 =[]
+  @j1_res = 0
+  @j2_res = 0
+
+  def win
+    return [['a1','a2','a3'],['b1','b2','b3'],['c1','c2','c3'],['a1','b2','c3'],['a3','b2','c1'],['a1','b1','c1'],['a2','b2','c2'],['a3','b3','c3']]
+  end
+
+  def inputj1
+    puts "Joueur 1 à toi de jouer"
+    puts ">"
+    input = gets.chomp
+    return @j1 << input
+  end
+
+  def inputj2
+    puts "Joueur 2 à toi de jouer"
+    puts ">"
+     return @j2 << gets.chomp
+  end
+
+  def test
+    win.map{|cell| if @j1.include?(cell[0]) && @j1.include?(cell[1]) && @j1.include?(cell[2]) then @j1_res = "oui" end }
+    win.map{|cell| if @j2.include?(cell[0]) && @j2.include?(cell[1]) && @j2.include?(cell[2]) then @j2_res = "oui" end }
+  end
+
+  def gameturn
+    count = 1
+    until @j1_res == ("oui") || @j2_res == ("oui") || count == 10
+      if count.odd? == true
+        inputj1
+        test
+        count = count + 1
+      elsif count.odd? == false
+        inputj2
+        test
+        count = count + 1
       end
     end
   end
 
-  def tourj2
-    compteur_2 = 0
-    puts "Joueur 2 à toi, sélectionne une case et écrit son code"
-
-    while compteur_2 != 1
-      print ">"
-      choice2 = gets.chomp
-      if choice2 == "a1" && @a1 == " "
-        @a1 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "a2" && @a2 == " "
-        @a2 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "a3" && @a3 == " "
-        @a3 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "b1" && @b1 == " "
-        @b1 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "b2" && @b2 == " "
-        @b2 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "b3" && @b3 == " "
-        @b3 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "c1" && @c1 == " "
-        @c1 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "c2" && @c2 == " "
-        @c2 = "o"; compteur_2 = compteur_2 + 1
-      elsif choice2 == "c3" && @c3 == " "
-        @c3 = "o"; compteur_2 = compteur_2 + 1
-      else 
-        puts "La case choisie est déjà occupée, choisissez-en une autre"
-      end
-    end
-  end
-
-  def testgame
-    if @a1 == @a2 && @a2 == @a3
-      return "victoire#{@a1}"
-    elsif @a1 == @b1 && @b1 == @c1
-      return "victoire#{@a1}"
-    elsif @b1 == @b2 && @b2 == @b3
-      return "victoire#{@b1}"
-    elsif @c1 == @c2 && @c2 == @c3
-      return "victoire#{@c1}"
-    elsif @a2 == @b2 && @b2 == @c2
-      return "victoire#{@a2}"
-    elsif @a3 == @b3 && @b3 == @c3
-      return "victoire#{@a3}"
-    elsif @a1 == @b2 && @b2 == @c3
-      return "victoire#{@a1}"
-    elsif @a3 == @b2 && @b2 == @c1
-      return "victoire#{@a3}"
-    end
-  end
-
-  def perform
-    compteur = 1
-    result = 0
-    while compteur != 10
-      if compteur.odd? == true
-        tourj1
-        compteur = compteur + 1
-      elsif compteur.odd? == false
-        tourj2
-        compteur = compteur + 1
-      end
-    end
-    puts "Fin de la partie"
-    if testgame == "victoirex"
-      puts "Victoire du Joueur1"
-    elsif testgame == "victoireo"
-      puts "Victoire du Joueur2"
-    end
-  end
 end
